@@ -1,7 +1,8 @@
 const screenWidth = 800;
 const screenHeight = 600;
 
-const playerVelocity = 240;
+const playerVelocityY = 500;
+const playerVelocityX = playerVelocityY/2;
 const messageOpportunityTime = 5000;
 const messageChance = 0.05;
 const tantrumMessageChance = 0.2;
@@ -220,7 +221,8 @@ const minionLevels = [
 export default {
     screenWidth,
     screenHeight,
-    playerVelocity,
+    playerVelocityX,
+    playerVelocityY,
     fuelTimeout,
     crackTimeout,
     messageOpportunityTime,
@@ -240,7 +242,8 @@ export default {
 export {
     screenWidth,
     screenHeight,
-    playerVelocity,
+    playerVelocityY,
+    playerVelocityX,
     fuelTimeout,
     crackTimeout,
     messageOpportunityTime,

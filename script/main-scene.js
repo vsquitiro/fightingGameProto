@@ -6,12 +6,12 @@ import SystemState from './state-machine.js';
 //     scripts
 // } from './scripts.js';
 
-import { Chaos } from './chaos.js';
+// import { Chaos } from './chaos.js';
 
 class MainScene extends Phaser.Scene {
     init() {
         console.log("Main Scene Init");
-        this.chaos = new Chaos();
+        // this.chaos = new Chaos();
     }
     create() {
         this.nextRest = 'restDown';
@@ -143,78 +143,78 @@ class MainScene extends Phaser.Scene {
 
         const plotLayer = map.getObjectLayer('Plots');
         const plotObjects = plotLayer.objects.map(transformObject);
-        this.plots = plotObjects
-            .filter((obj) => obj.get('objectType') == 'plot')
-            .map(createSprite('basin', 0))
-            .map((plot, index) => {
-                plot.set('plotIndex', index);
-                SystemState.addPlot(plot.get('id'));
-                plot.getPlotDef = () => SystemState.farm[index];
-                return plot;
-            });
-        this.plotInteractions = plotObjects
-            .filter((obj) => obj.get('objectType') == 'interactor')
-            .map(createZone);
+        // this.plots = plotObjects
+        //     .filter((obj) => obj.get('objectType') == 'plot')
+        //     .map(createSprite('basin', 0))
+        //     .map((plot, index) => {
+        //         plot.set('plotIndex', index);
+        //         SystemState.addPlot(plot.get('id'));
+        //         plot.getPlotDef = () => SystemState.farm[index];
+        //         return plot;
+        //     });
+        // this.plotInteractions = plotObjects
+        //     .filter((obj) => obj.get('objectType') == 'interactor')
+        //     .map(createZone);
 
-        const springLayer = map.getObjectLayer('Springs');
-        const springObjects = springLayer.objects.map(transformObject);
-        this.springs = springObjects
-            .filter((obj) => obj.get('objectType') == 'spring')
-            .map(createSprite('springs', 0, 'lvl00'))
-            .map((spring, index) => {
-                spring.set('springIndex', index);
-                SystemState.addSpring(spring.get('id'));
-                spring.getSpringDef = () => SystemState.fountain[index];
-                return spring;
-            });
-        this.springInteractions = springObjects
-            .filter((obj) => obj.get('objectType') == 'interactor')
-            .map(createZone);
+        // const springLayer = map.getObjectLayer('Springs');
+        // const springObjects = springLayer.objects.map(transformObject);
+        // this.springs = springObjects
+        //     .filter((obj) => obj.get('objectType') == 'spring')
+        //     .map(createSprite('springs', 0, 'lvl00'))
+        //     .map((spring, index) => {
+        //         spring.set('springIndex', index);
+        //         SystemState.addSpring(spring.get('id'));
+        //         spring.getSpringDef = () => SystemState.fountain[index];
+        //         return spring;
+        //     });
+        // this.springInteractions = springObjects
+        //     .filter((obj) => obj.get('objectType') == 'interactor')
+        //     .map(createZone);
 
-        const godControlLayer = map.getObjectLayer('GodControls');
-        const godControlObjects = godControlLayer.objects.map(transformObject);
-        this.foodTerminal = godControlObjects
-            .filter((obj) => obj.get('objectType') == 'foodTerminal')
-            .map(createSprite('objects', 0));
-        this.fuelTerminal = godControlObjects
-            .filter((obj) => obj.get('objectType') == 'fuelTerminal')
-            .map(createSprite('objects', 1));
-        this.godControlInteractions = godControlObjects
-            .filter((obj) => obj.get('objectType') == 'interactor')
-            .map(createZone);
+        // const godControlLayer = map.getObjectLayer('GodControls');
+        // const godControlObjects = godControlLayer.objects.map(transformObject);
+        // this.foodTerminal = godControlObjects
+        //     .filter((obj) => obj.get('objectType') == 'foodTerminal')
+        //     .map(createSprite('objects', 0));
+        // this.fuelTerminal = godControlObjects
+        //     .filter((obj) => obj.get('objectType') == 'fuelTerminal')
+        //     .map(createSprite('objects', 1));
+        // this.godControlInteractions = godControlObjects
+        //     .filter((obj) => obj.get('objectType') == 'interactor')
+        //     .map(createZone);
 
 
-        const fertLayer = map.getObjectLayer('Fert');
-        const fertObjects = fertLayer.objects.map(transformObject);
-        this.ferts = fertObjects
-            .filter((obj) => obj.get('objectType') == 'fert')
-            .map(createSprite('objects', 2));  
-        this.fertInteractions = fertObjects
-            .filter((obj) => obj.get('objectType') == 'interactor')
-            .map(createZone);
+        // const fertLayer = map.getObjectLayer('Fert');
+        // const fertObjects = fertLayer.objects.map(transformObject);
+        // this.ferts = fertObjects
+        //     .filter((obj) => obj.get('objectType') == 'fert')
+        //     .map(createSprite('objects', 2));  
+        // this.fertInteractions = fertObjects
+        //     .filter((obj) => obj.get('objectType') == 'interactor')
+        //     .map(createZone);
 
-        this.interactables = [
-            ...this.plots,
-            ...this.springs,
-            ...this.fuelTerminal,
-            ...this.foodTerminal,
-            ...this.ferts,
-        ];
-        this.targetZones = [
-            ...this.plotInteractions,
-            ...this.springInteractions,
-            ...this.godControlInteractions,
-            ...this.fertInteractions,
-        ];
+        // this.interactables = [
+        //     ...this.plots,
+        //     ...this.springs,
+        //     ...this.fuelTerminal,
+        //     ...this.foodTerminal,
+        //     ...this.ferts,
+        // ];
+        // this.targetZones = [
+        //     ...this.plotInteractions,
+        //     ...this.springInteractions,
+        //     ...this.godControlInteractions,
+        //     ...this.fertInteractions,
+        // ];
 
         this.target = null;
 
-        this.player = this.physics.add.sprite(400,300, 'player', 0);
+        this.player = this.physics.add.sprite(400,1000, 'player', 0);
         this.player.setDepth(100);
         this.player.body.setSize(24,20);
         this.player.body.offset.y=98;
         this.player.body.offset.x=20;
-        this.player.body.setGravityY(300)
+        // this.player.body.setGravityY(300)
 
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
@@ -247,8 +247,8 @@ class MainScene extends Phaser.Scene {
         });
 
         this.debug = this.input.keyboard.addKeys('B,N');
-        this.debug.B.on('down', () => SystemState.displayMessage(this.chaos.getHungerMessage()));
-        this.debug.N.on('down', () => SystemState.displayMessage(this.chaos.getVatMessage()));
+        // this.debug.B.on('down', () => SystemState.displayMessage(this.chaos.getHungerMessage()));
+        // this.debug.N.on('down', () => SystemState.displayMessage(this.chaos.getVatMessage()));
 
         // this.debugKey = this.input.keyboard.addKeys(
         //     {feed:Phaser.Input.Keyboard.KeyCodes.F,
@@ -273,18 +273,19 @@ class MainScene extends Phaser.Scene {
         this.handleUIInput();
         this.handleInteractionInput();
         this.detectOverlap();
-        this.chaos.checkForMessage(time);
-        this.checkGrowthSprite();
-        this.checkFillSprite();
+        // this.chaos.checkForMessage(time);
+        // this.checkGrowthSprite();
+        // this.checkFillSprite();
         this.checkGodLevel();
         // this.checkScripts();
     }
 
     handleMovementInput() {
-        //this.player.body.setVelocity(0);
+        this.player.body.setVelocityX(0);
 
         if (SystemState.allowMovement) {
-            const { playerVelocity } = globalConfig;
+            const { playerVelocityY } = globalConfig;
+            const { playerVelocityX } = globalConfig;
             const gamepad = this.input.gamepad.getPad(0);
              var horizontalMove = 0;
              var verticalMove = 0;
@@ -292,31 +293,35 @@ class MainScene extends Phaser.Scene {
             // Horizontal movement
             if (this.cursors.left.isDown || this.wasd.left.isDown || (gamepad && gamepad.left))
             {
-                this.player.body.setVelocityX(-playerVelocity);
+                this.player.body.setVelocityX(-playerVelocityX);
                 horizontalMove--;
             }
             else if (this.cursors.right.isDown || this.wasd.right.isDown || (gamepad && gamepad.right))
             {
-                this.player.body.setVelocityX(playerVelocity);
+                this.player.body.setVelocityX(playerVelocityX);
                 horizontalMove++;
             }
 
             // Vertical movement
             if (this.cursors.up.isDown || this.wasd.up.isDown || (gamepad && gamepad.up))
             {
-                this.player.body.setVelocityY(-playerVelocity);
-                verticalMove--;
+                console.log(this.player.body.y);
+                if(this.player.body.y > 1000)
+                {
+                    this.player.body.setVelocityY(-playerVelocityY);
+                    verticalMove--;
+                }
             }
             else if(this.cursors.down.isDown || this.wasd.down.isDown || (gamepad && gamepad.down))
             {
-                this.player.body.setVelocityY(playerVelocity);
+                this.player.body.setVelocityY(playerVelocityY);
                 verticalMove++;
             }
 
             if (gamepad) {
                 const stickPos = gamepad.leftStick;
                 if (Math.abs(stickPos.x) > .2) {
-                    this.player.body.setVelocityX(stickPos.x * playerVelocity);
+                    this.player.body.setVelocityX(stickPos.x * playerVelocityX);
                     if(stickPos.x > 0) {
                         horizontalMove++;
                     } else {
@@ -324,7 +329,7 @@ class MainScene extends Phaser.Scene {
                     }
                 }
                 if (Math.abs(stickPos.y) > .2) {
-                    this.player.body.setVelocityY(stickPos.y * playerVelocity);
+                    this.player.body.setVelocityY(stickPos.y * playerVelocityY);
                     if(stickPos.y > 0) {
                         verticalMove++;
                     } else {
@@ -468,17 +473,6 @@ class MainScene extends Phaser.Scene {
             }
             SystemState.currentInstruction = null;
         }
-
-        //TODO remove when done debugging
-        // if (this.debugKey.feed.isDown)
-        // {
-        //     SystemState.god.hunger = Math.max(0, SystemState.god.hunger - 1);
-        //     SystemState.god.exp += .5;
-        // }
-        // if (this.debugKey.plant.isDown)
-        // {
-        //     SystemState.farm[0].planted = true;
-        // }
     }
 
     displayInteractAction(focus) {
@@ -549,125 +543,6 @@ class MainScene extends Phaser.Scene {
                 SystemState.displayMessage("You need fertilizer to do that...");
             }
         }
-
-        // } else if(SystemState.inventory.fuel > 0) {
-            //Add back in if we reimplement farm levels
-            //farm.farmExp++;
-            //SystemState.inventory.fuel--;
-        // }
-    }
-
-    checkGrowthSprite() {
-        this.plots.forEach((plot) => {
-            const farm = plot.getPlotDef();
-            if(farm.harvestable) {
-                plot.setFrame(2);
-            }
-            var fertLevel = farm.fertTimeRemain;
-            if(fertLevel > 75) {
-                plot.tint = 0xf1c40f;
-            } else if(fertLevel > 50) {
-                plot.tint = 0xf4d03f;
-            } else if(fertLevel > 25) {
-                plot.tint = 0xf7dc6f;
-            } else if(fertLevel > 0) {
-                plot.tint = 0xf9e79f;
-            } else {
-                plot.clearTint();
-            }
-        });
-    }
-
-    interactWithSpring(spring) {
-        const fountain = spring.getSpringDef();
-        var frameMod = this.spriteIdx[fountain.rateLevel];
-        if(!fountain.planted) {
-            if (SystemState.inventory.fuel < 1) {
-                SystemState.displayMessage("Where's the Nektare, moron?");
-            } else {
-                fountain.planted = true;
-                SystemState.inventory.fuel--;
-                spring.setFrame(1+frameMod);
-                SystemState.primings += 1;
-                if (SystemState.primings == 1) {
-                    SystemState.eventsComplete.push('firstPrime');
-                }
-            }
-        } else if(fountain.currentUnits > 0) {
-            SystemState.inventory.fuel += fountain.currentUnits;
-            fountain.currentUnits = 0;
-            spring.setFrame(1+frameMod);
-        } else if(SystemState.inventory.fuel > 0) {
-            SystemState.god.teaching = false;
-            if(fountain.rateLevel != 4) {
-                SystemState.inventory.fuel--;
-                fountain.rateExp++;
-            }
-        }
-    }
-
-    checkFillSprite() {
-        this.springs.forEach((spring, index)=> {
-            const fountain = spring.getSpringDef();
-            var frameMod = this.spriteIdx[fountain.rateLevel];
-            var unitCount = fountain.currentUnits;
-            //TODO change back when building is implimented
-            var capacityLevel = fountain.rateLevel;
-            // var capacityLevel = fountain.capacityLevel;
-            var fuelCapacity = globalConfig.rateLevels[capacityLevel].capacity;
-            // var fuelCapacity = globalConfig.capacityLevels[capacityLevel].capacity;
-            if(unitCount == fuelCapacity) {
-                spring.setFrame(6+frameMod);
-            } else if (unitCount > 0) {
-                spring.setFrame(2+frameMod);
-            } else if (fountain.planted) {
-                spring.setFrame(1+frameMod);
-            } else {
-                spring.setFrame(frameMod);
-            }
-        });
-    }
-
-    interactWithFoodTerminal() {
-        if(SystemState.inventory.food < 1) {
-            SystemState.displayMessage("Are YOU the food!?");
-        } else {
-            SystemState.inventory.food--;               
-            var currentHunger = SystemState.god.hunger;
-            SystemState.god.hunger = Math.max(currentHunger-10,0);
-            SystemState.god.exp++;
-
-            SystemState.feedings += 1;
-            if (SystemState.feedings == 1) {
-                SystemState.eventsComplete.push('firstFeed');
-            }
-        }
-    }
-
-    interactWithFuelTerminal() {
-        if(SystemState.inventory.fuel < 1) {
-            SystemState.displayMessage("Aren't you forgetting something?");
-        } else {
-            if(!SystemState.god.teaching) {
-                SystemState.inventory.fuel--;
-                var currentUnits = SystemState.vat.currentUnits;
-                var currentMax = globalConfig.vatLevels[SystemState.god.level].maxUnits;
-                SystemState.vat.currentUnits = Math.min(currentUnits+35,currentMax);
-                SystemState.fills += 1;
-            } else {
-                SystemState.inventory.fuel--;
-                SystemState.vat.currentUnits += 35;
-                SystemState.displayMessage("No, put the Nektare in the spring!");
-                SystemState.inventory.fuel++;
-                SystemState.vat.currentUnits -= 35;
-                SystemState.god.teaching = false;
-
-                SystemState.fills += 1;
-                if (SystemState.fills == 1) {
-                    SystemState.eventsComplete.push('firstFill');
-                }
-            }
-        } 
     }
 
     checkGodLevel() {
@@ -679,77 +554,6 @@ class MainScene extends Phaser.Scene {
             this.vatLevel2.visible = true;
         }
     }
-
-    interactWithFert() {
-        if (SystemState.inventory.food >= 5 && SystemState.inventory.fuel >= 5) {
-            SystemState.inventory.fert++;
-            SystemState.inventory.food -= 5;
-            SystemState.inventory.fuel -= 5;           
-        } else {
-            SystemState.displayMessage("You need materials and a brain...");
-        }
-    }
-
-//     checkScripts() {
-//         if (!SystemState.currentEvent) {
-//             const eventsComplete = SystemState.eventsComplete;
-//             scripts.find((script) => {
-//                 if (eventsComplete.includes(script.name)) return false;
-
-//                 const shouldNotRun = script.conditions.find((condition) => {
-//                     if (condition.startsWith('!')) {
-//                         return eventsComplete.includes(condition.slice(1));
-//                     } else {
-//                         return !eventsComplete.includes(condition);
-//                     }
-//                 });
-
-//                 if (!shouldNotRun) {
-//                     this.runScript(script);
-//                     return true;
-//                 }
-//                 return false;
-//             });
-//         }
-//     }
-
-//     runScript(script) {
-//         SystemState.currentEvent = script;
-        
-//         script.onStep = 0;
-//         this.runScriptStep();
-//     }
-
-//     runScriptStep() {
-//         const script = SystemState.currentEvent;
-//         const currentStep = script.script[script.onStep];
-
-//         if (currentStep.preMessage) {
-//             currentStep.preMessage(this);
-//         }
-//         if (currentStep.message) {
-//             SystemState.displayMessage(currentStep.message);
-//         }
-//     }
-
-//     completeScriptStep() {
-//         if (!SystemState.currentEvent) return;
-//         const script = SystemState.currentEvent;
-//         const currentStep = script.script[script.onStep];
-
-//         let onComplete = currentStep.onComplete;
-//         if (currentStep.onComplete instanceof Function) {
-//             onComplete = onComplete(this);
-//         }
-
-//         if (onComplete === 'next') {
-//             script.onStep += 1;
-//             this.runScriptStep();
-//         } else {
-//             SystemState.currentEvent = null;
-//             SystemState.eventsComplete.push(script.name);
-//         }
-//     }
 }
 
 export default MainScene;
