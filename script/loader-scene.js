@@ -48,6 +48,9 @@ class Loader extends Phaser.Scene {
         this.load.spritesheet('dinoFace', 'assets/rexgod.png', {frameWidth: 192, frameHeight: 192});
         this.load.image('textBox', 'assets/message.png');
         this.load.image('invBG', 'assets/Inv BG.png');
+        this.load.image('Magnus', 'assets/Magnus.jpg');
+        this.load.image('Buck', 'assets/Buck.jpg');
+        this.load.image('Atlas', 'assets/Atlas.jpg');
 
         //Sounds
         this.load.audio('mainLoop', 'assets/ALIENFARM.mp3');
