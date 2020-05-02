@@ -2,9 +2,9 @@
 
 import globalConfig from './global-config.js';
 import SystemState from './state-machine.js';
-import {
-    scripts
-} from './scripts.js';
+// import {
+//     scripts
+// } from './scripts.js';
 
 import { Chaos } from './chaos.js';
 
@@ -214,6 +214,7 @@ class MainScene extends Phaser.Scene {
         this.player.body.setSize(24,20);
         this.player.body.offset.y=98;
         this.player.body.offset.x=20;
+        this.player.body.setGravityY(300)
 
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
@@ -276,17 +277,17 @@ class MainScene extends Phaser.Scene {
         this.checkGrowthSprite();
         this.checkFillSprite();
         this.checkGodLevel();
-        this.checkScripts();
+        // this.checkScripts();
     }
 
     handleMovementInput() {
-        this.player.body.setVelocity(0);
+        //this.player.body.setVelocity(0);
 
         if (SystemState.allowMovement) {
             const { playerVelocity } = globalConfig;
             const gamepad = this.input.gamepad.getPad(0);
-            var horizontalMove = 0;
-            var verticalMove = 0;
+             var horizontalMove = 0;
+             var verticalMove = 0;
 
             // Horizontal movement
             if (this.cursors.left.isDown || this.wasd.left.isDown || (gamepad && gamepad.left))
@@ -394,7 +395,7 @@ class MainScene extends Phaser.Scene {
                         SystemState.skipMessage();
                     } else {
                         SystemState.dismissMessage();
-                        this.completeScriptStep();
+                        // this.completeScriptStep();
                     }
                 }
                 else if (this.nearest && SystemState.allowInteraction) {
@@ -689,66 +690,66 @@ class MainScene extends Phaser.Scene {
         }
     }
 
-    checkScripts() {
-        if (!SystemState.currentEvent) {
-            const eventsComplete = SystemState.eventsComplete;
-            scripts.find((script) => {
-                if (eventsComplete.includes(script.name)) return false;
+//     checkScripts() {
+//         if (!SystemState.currentEvent) {
+//             const eventsComplete = SystemState.eventsComplete;
+//             scripts.find((script) => {
+//                 if (eventsComplete.includes(script.name)) return false;
 
-                const shouldNotRun = script.conditions.find((condition) => {
-                    if (condition.startsWith('!')) {
-                        return eventsComplete.includes(condition.slice(1));
-                    } else {
-                        return !eventsComplete.includes(condition);
-                    }
-                });
+//                 const shouldNotRun = script.conditions.find((condition) => {
+//                     if (condition.startsWith('!')) {
+//                         return eventsComplete.includes(condition.slice(1));
+//                     } else {
+//                         return !eventsComplete.includes(condition);
+//                     }
+//                 });
 
-                if (!shouldNotRun) {
-                    this.runScript(script);
-                    return true;
-                }
-                return false;
-            });
-        }
-    }
+//                 if (!shouldNotRun) {
+//                     this.runScript(script);
+//                     return true;
+//                 }
+//                 return false;
+//             });
+//         }
+//     }
 
-    runScript(script) {
-        SystemState.currentEvent = script;
+//     runScript(script) {
+//         SystemState.currentEvent = script;
         
-        script.onStep = 0;
-        this.runScriptStep();
-    }
+//         script.onStep = 0;
+//         this.runScriptStep();
+//     }
 
-    runScriptStep() {
-        const script = SystemState.currentEvent;
-        const currentStep = script.script[script.onStep];
+//     runScriptStep() {
+//         const script = SystemState.currentEvent;
+//         const currentStep = script.script[script.onStep];
 
-        if (currentStep.preMessage) {
-            currentStep.preMessage(this);
-        }
-        if (currentStep.message) {
-            SystemState.displayMessage(currentStep.message);
-        }
-    }
+//         if (currentStep.preMessage) {
+//             currentStep.preMessage(this);
+//         }
+//         if (currentStep.message) {
+//             SystemState.displayMessage(currentStep.message);
+//         }
+//     }
 
-    completeScriptStep() {
-        if (!SystemState.currentEvent) return;
-        const script = SystemState.currentEvent;
-        const currentStep = script.script[script.onStep];
+//     completeScriptStep() {
+//         if (!SystemState.currentEvent) return;
+//         const script = SystemState.currentEvent;
+//         const currentStep = script.script[script.onStep];
 
-        let onComplete = currentStep.onComplete;
-        if (currentStep.onComplete instanceof Function) {
-            onComplete = onComplete(this);
-        }
+//         let onComplete = currentStep.onComplete;
+//         if (currentStep.onComplete instanceof Function) {
+//             onComplete = onComplete(this);
+//         }
 
-        if (onComplete === 'next') {
-            script.onStep += 1;
-            this.runScriptStep();
-        } else {
-            SystemState.currentEvent = null;
-            SystemState.eventsComplete.push(script.name);
-        }
-    }
+//         if (onComplete === 'next') {
+//             script.onStep += 1;
+//             this.runScriptStep();
+//         } else {
+//             SystemState.currentEvent = null;
+//             SystemState.eventsComplete.push(script.name);
+//         }
+//     }
 }
 
 export default MainScene;

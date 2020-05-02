@@ -8,7 +8,7 @@ import { Simulation } from './simulation.js';
 import PauseScene from './pause-scene.js';
 import WinScene from './win-scene.js';
 import LoseScene from './lose-scene.js';
-import IntroScene from './intro-scene.js';
+//import IntroScene from './intro-scene.js';
 
 //States
 const menu = "menu",
@@ -24,8 +24,8 @@ const menu = "menu",
 const SystemState = new StateMachine({
     init: menu,
     transitions: [
-        { name: 'gameStart', from: menu, to: intro },
-        { name: 'introComplete', from: intro, to: main },
+        { name: 'gameStart', from: menu, to: main },
+  //      { name: 'introComplete', from: intro, to: main },
         { name: 'pause', from: main, to: pause },
         { name: 'unpause', from: pause, to: main },
         { name: 'winGame', from: main, to: win},
@@ -46,8 +46,8 @@ const SystemState = new StateMachine({
             win: false,
             lose: false,
         },
-        allowMovement: false,
-        allowInteraction: false,
+        allowMovement: true,
+        allowInteraction: true,
         allowMessageInteraction: true,
         lastMessageCheckTime: 0,
         plantings: 0,
@@ -206,11 +206,11 @@ const SystemState = new StateMachine({
             this.game.scene.remove('pauseScene');
         },
 
-        onGameStart: function() {
-            this.game.scene.add('intro', IntroScene, true);
-        },
+        // onGameStart: function() {
+        //     this.game.scene.add('intro', IntroScene, true);
+        // },
 
-        onIntroComplete: function() {
+        onGameStart: function() {
             this.game.scene.add('mainScene', MainScene, true);
             this.game.scene.add('overlayScene', OverlayScene, true);
         },
