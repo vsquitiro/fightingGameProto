@@ -127,19 +127,19 @@ class MainScene extends Phaser.Scene {
             zone.body.moves = false;
             return zone;
         };
-        const createSprite = (sheet, frame, animation) => (obj) => {
-            const x = obj.x + (obj.width / 2);
-            const y = obj.y - (obj.height / 2);
-            const sprite = this.physics.add.sprite(x, y, sheet, frame);
-            sprite.customProperties = {
-                ...obj.customProperties
-            };
-            sprite.get = (name) => sprite.customProperties[name];
-            sprite.set = (name, value) => sprite.customProperties[name] = value;
+        // const createSprite = (sheet, frame, animation) => (obj) => {
+        //     const x = obj.x + (obj.width / 2);
+        //     const y = obj.y - (obj.height / 2);
+        //     const sprite = this.physics.add.sprite(x, y, sheet, frame);
+        //     sprite.customProperties = {
+        //         ...obj.customProperties
+        //     };
+        //     sprite.get = (name) => sprite.customProperties[name];
+        //     sprite.set = (name, value) => sprite.customProperties[name] = value;
 
-            sprite.setImmovable(true);
-            return sprite;
-        };
+        //     sprite.setImmovable(true);
+        //     return sprite;
+        // };
 
         const plotLayer = map.getObjectLayer('Plots');
         const plotObjects = plotLayer.objects.map(transformObject);
@@ -209,11 +209,43 @@ class MainScene extends Phaser.Scene {
 
         this.target = null;
 
-        this.player = this.physics.add.sprite(400,1000, 'player', 0);
+        this.player = this.physics.add.sprite(100,980, 'Atlas');
         this.player.setDepth(100);
-        this.player.body.setSize(24,20);
-        this.player.body.offset.y=98;
+        this.player.body.setSize(192,232);
+        this.player.body.offset.y=0;
         this.player.body.offset.x=20;
+        this.player.body.debugShowBody;
+        this.player.canMove = true;
+        this.player.performingMove = "none";
+        this.player.moveStage = -1;
+        this.player.moveProgress = 0;
+        this.player.moveList = {
+            standingLight: {
+                moveStage: [
+                    {
+                        stageLength: 2,
+                        xOffset: 120,
+                        yOffset: 110,
+                        height: 30,
+                        width: 90,
+                    },
+                    {
+                        stageLength: 5,
+                        xOffset: 170,
+                        yOffset: 60,
+                        height: 30,
+                        width: 90,
+                    },
+                    {
+                        stageLength: 5,
+                        xOffset: 170,
+                        yOffset: 20,
+                        height: 70,
+                        width: 90,
+                    }
+                ]
+            }
+        }
         // this.player.body.setGravityY(300)
 
         this.physics.world.bounds.width = map.widthInPixels;
@@ -236,17 +268,23 @@ class MainScene extends Phaser.Scene {
             {up:Phaser.Input.Keyboard.KeyCodes.W,
             down:Phaser.Input.Keyboard.KeyCodes.S,
             left:Phaser.Input.Keyboard.KeyCodes.A,
-            right:Phaser.Input.Keyboard.KeyCodes.D}
-            );
+            right:Phaser.Input.Keyboard.KeyCodes.D,
+            light: Phaser.Input.Keyboard.KeyCodes.J,
+            heavy: Phaser.Input.Keyboard.KeyCodes.K,
+            special: Phaser.Input.Keyboard.KeyCodes.L,
+        });
         this.interaction = this.input.keyboard.addKeys({
             accept: Phaser.Input.Keyboard.KeyCodes.E,
             accept2: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            // light: Phaser.Input.Keyboard.KeyCodes.J,
+            // heavy: Phaser.Input.Keyboard.KeyCodes.K,
+            // special: Phaser.Input.Keyboard.KeyCodes.L,
         });
         this.ui = this.input.keyboard.addKeys({
             pause: Phaser.Input.Keyboard.KeyCodes.ESC,
         });
 
-        this.debug = this.input.keyboard.addKeys('B,N');
+        // this.debug = this.input.keyboard.addKeys('B,N');
         // this.debug.B.on('down', () => SystemState.displayMessage(this.chaos.getHungerMessage()));
         // this.debug.N.on('down', () => SystemState.displayMessage(this.chaos.getVatMessage()));
 
@@ -278,82 +316,140 @@ class MainScene extends Phaser.Scene {
         // this.checkFillSprite();
         this.checkGodLevel();
         // this.checkScripts();
+        this.checkMoves();
     }
 
     handleMovementInput() {
-        this.player.body.setVelocityX(0);
 
         if (SystemState.allowMovement) {
+            // console.log(this.player.body.y)
             const { playerVelocityY } = globalConfig;
             const { playerVelocityX } = globalConfig;
             const gamepad = this.input.gamepad.getPad(0);
-             var horizontalMove = 0;
-             var verticalMove = 0;
+            //  var horizontalMove = 0;
+            //  var verticalMove = 0;
 
             // Horizontal movement
-            if (this.cursors.left.isDown || this.wasd.left.isDown || (gamepad && gamepad.left))
-            {
-                this.player.body.setVelocityX(-playerVelocityX);
-                horizontalMove--;
-            }
-            else if (this.cursors.right.isDown || this.wasd.right.isDown || (gamepad && gamepad.right))
-            {
-                this.player.body.setVelocityX(playerVelocityX);
-                horizontalMove++;
-            }
+            if(this.player.canMove) {
+                if(this.wasd.light.isDown) {
+                    this.player.canMove = false;
+                    this.player.performingMove = 'standingLight'
+                } else {
+                    if(this.player.body.y > 855) {
+                        this.player.body.setVelocityX(0);
+                        if (this.cursors.left.isDown || this.wasd.left.isDown || (gamepad && gamepad.left))
+                        {
+                            this.player.body.setVelocityX(-playerVelocityX);
+                            // horizontalMove--;
+                        }
+                        else if (this.cursors.right.isDown || this.wasd.right.isDown || (gamepad && gamepad.right))
+                        {
+                            this.player.body.setVelocityX(playerVelocityX);
+                            // horizontalMove++;
+                        }
+                    }
 
-            // Vertical movement
-            if (this.cursors.up.isDown || this.wasd.up.isDown || (gamepad && gamepad.up))
-            {
-                console.log(this.player.body.y);
-                if(this.player.body.y > 1000)
-                {
-                    this.player.body.setVelocityY(-playerVelocityY);
-                    verticalMove--;
-                }
-            }
-            else if(this.cursors.down.isDown || this.wasd.down.isDown || (gamepad && gamepad.down))
-            {
-                this.player.body.setVelocityY(playerVelocityY);
-                verticalMove++;
-            }
-
-            if (gamepad) {
-                const stickPos = gamepad.leftStick;
-                if (Math.abs(stickPos.x) > .2) {
-                    this.player.body.setVelocityX(stickPos.x * playerVelocityX);
-                    if(stickPos.x > 0) {
-                        horizontalMove++;
-                    } else {
-                        horizontalMove--;
+                    // Vertical movement
+                    if (this.cursors.up.isDown || this.wasd.up.isDown || (gamepad && gamepad.up))
+                    {
+                        if(this.player.body.y > 855)
+                        {
+                            this.player.body.setVelocityY(-playerVelocityY*1.5);
+                            // verticalMove--;
+                        }
+                    }
+                    else if(this.cursors.down.isDown || this.wasd.down.isDown || (gamepad && gamepad.down))
+                    {
+                        // this.player.body.setVelocityY(playerVelocityY);
+                        // verticalMove++;
                     }
                 }
-                if (Math.abs(stickPos.y) > .2) {
-                    this.player.body.setVelocityY(stickPos.y * playerVelocityY);
-                    if(stickPos.y > 0) {
-                        verticalMove++;
-                    } else {
-                        verticalMove--;
+
+                // if (gamepad) {
+                //     const stickPos = gamepad.leftStick;
+                //     if (Math.abs(stickPos.x) > .2) {
+                //         this.player.body.setVelocityX(stickPos.x * playerVelocityX);
+                //         if(stickPos.x > 0) {
+                //             horizontalMove++;
+                //         } else {
+                //             horizontalMove--;
+                //         }
+                //     }
+                //     if (Math.abs(stickPos.y) > .2) {
+                //         this.player.body.setVelocityY(stickPos.y * playerVelocityY);
+                //         if(stickPos.y > 0) {
+                //             verticalMove++;
+                //         } else {
+                //             verticalMove--;
+                //         }
+                //     }
+                // }
+
+                // if(verticalMove>0) {
+                //     this.player.anims.play('down',true);
+                //     this.nextRest = 'restDown';
+                // } else if(verticalMove<0) {
+                //     this.player.anims.play('up',true);
+                //     this.nextRest = 'restUp';
+                // } else if(horizontalMove>0) {
+                //     this.player.anims.play('right',true);
+                //     this.nextRest = 'restRight';
+                // } else if(horizontalMove<0) {
+                //     this.player.anims.play('left',true);
+                //     this.nextRest = 'restLeft';
+                // } else {
+                //     this.player.anims.play(this.nextRest);
+                // }
+            }
+        }
+    }
+
+    checkMoves() {
+        if(!this.player.canMove) {
+            if(this.player.performingMove != 'none') {
+                var playerMove = this.player.moveList[this.player.performingMove].moveStage;
+                if(this.player.moveStage == -1) {
+                    this.player.body.setVelocityX(0);
+                    this.player.body.setVelocityY(0);
+                    this.player.moveStage = 0;
+                    this.hitBox = this.add.rectangle(
+                        this.player.body.x + playerMove[0].xOffset,
+                        this.player.body.y + playerMove[0].yOffset,
+                        playerMove[0].width,
+                        playerMove[0].height
+                    )
+                    this.hitBox.isFilled = false;
+                    this.hitBox.setOrigin(0,0);
+                    this.hitBox.setStrokeStyle(4, 0x6495ed);
+                    this.hitBox.setDepth(101);
+                } else {
+                    this.player.moveProgress++;
+                    if(this.player.moveProgress > playerMove[this.player.moveStage].stageLength) {
+                        this.player.moveStage++;
+                        if(this.player.moveStage >= playerMove.length) {
+                            this.player.performingMove = 'none';
+                            this.player.moveStage = -1;
+                            this.player.moveProgress = 0;
+                            this.hitBox.destroy();
+                            this.hitBox = null;
+                            this.player.canMove = true;
+                        } else {
+                            this.hitBox.destroy();
+                            this.hitBox = this.add.rectangle(
+                                this.player.body.x + playerMove[this.player.moveStage].xOffset,
+                                this.player.body.y + playerMove[this.player.moveStage].yOffset,
+                                playerMove[this.player.moveStage].width,
+                                playerMove[this.player.moveStage].height
+                                )
+                            this.hitBox.isFilled = false;
+                            this.hitBox.setOrigin(0,0);
+                            this.hitBox.setStrokeStyle(4, 0x6495ed);
+                            this.hitBox.setDepth(101);
+                        }
+                        this.player.moveProgress = 0;
                     }
                 }
             }
-
-            if(verticalMove>0) {
-                this.player.anims.play('down',true);
-                this.nextRest = 'restDown';
-            } else if(verticalMove<0) {
-                this.player.anims.play('up',true);
-                this.nextRest = 'restUp';
-            } else if(horizontalMove>0) {
-                this.player.anims.play('right',true);
-                this.nextRest = 'restRight';
-            } else if(horizontalMove<0) {
-                this.player.anims.play('left',true);
-                this.nextRest = 'restLeft';
-            } else {
-                this.player.anims.play(this.nextRest);
-            }
-
         }
     }
 
@@ -503,45 +599,6 @@ class MainScene extends Phaser.Scene {
             SystemState.currentInstruction = 'refill vat';
         } else if(type === 'fert') {
             SystemState.currentInstruction = 'spend 5 Embroja and Nektare each to make fertilizer';
-        }
-    }
-
-    interactWithPlot(plot) {
-        const farm = plot.getPlotDef();
-        if(!farm.planted) {
-            if (SystemState.inventory.food < 1) {
-                SystemState.displayMessage("You don't have a seed, dipshit");
-            } else if(SystemState.god.level != 0 || SystemState.god.teaching == true) {
-                SystemState.god.teaching = false;
-                farm.planted = true;
-                farm.growing = true;
-                SystemState.inventory.food--;
-                SystemState.plantings += 1;
-                if (SystemState.plantings === 1) {
-                    SystemState.eventsComplete.push('firstPlant');
-                }
-                plot.setFrame(1);
-            } else {
-                SystemState.displayMessage("Farm later, feed now!");
-            }
-        } else if(farm.harvestable) {
-            if(farm.fert) { 
-                SystemState.inventory.food += farm.currentUnits*3;
-            } else {
-                SystemState.inventory.food += farm.currentUnits;
-            }
-            farm.currentUnits = 0;
-            farm.planted = false;
-            farm.harvestable = false;
-            plot.setFrame(0);
-        } else if(!farm.fert) {
-            if(SystemState.inventory.fert > 0) {
-                SystemState.inventory.fert--;
-                farm.fert = true;
-                farm.fertTimeRemain = 100;
-            } else {
-                SystemState.displayMessage("You need fertilizer to do that...");
-            }
         }
     }
 

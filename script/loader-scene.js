@@ -50,7 +50,7 @@ class Loader extends Phaser.Scene {
         this.load.image('invBG', 'assets/Inv BG.png');
         this.load.image('Magnus', 'assets/Magnus.jpg');
         this.load.image('Buck', 'assets/Buck.jpg');
-        this.load.image('Atlas', 'assets/Atlas.jpg');
+        this.load.image('Atlas', 'assets/AtlasSprite.png');
 
         //Sounds
         this.load.audio('mainLoop', 'assets/ALIENFARM.mp3');

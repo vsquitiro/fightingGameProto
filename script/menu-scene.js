@@ -16,7 +16,7 @@ class MenuScene extends Phaser.Scene {
             active: () => {
                 if (!this) return;
                 
-                var text = this.add.text(screenWidth/2, screenHeight/2, 'WHY BABY?');
+                var text = this.add.text(screenWidth/2, screenHeight/2, 'WRESTLE MASTERS');
                 text.setFontSize(80);
                 text.setFontFamily('Audiowide, Helvetica, Verdana, Sans');
                 text.setOrigin(0.5, 0.5);

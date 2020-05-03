@@ -15,7 +15,8 @@ const gameConfig = {
         default: 'arcade',
         arcade: {
             // debug: true,
-            gravity: {y:1000}
+            gravity: {y:1200},
+            debug: true
         },
     },
     input: {

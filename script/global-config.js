@@ -1,4 +1,4 @@
-const screenWidth = 800;
+const screenWidth = 1200;
 const screenHeight = 600;
 
 const playerVelocityY = 500;
