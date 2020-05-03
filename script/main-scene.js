@@ -271,7 +271,58 @@ class MainScene extends Phaser.Scene {
                 ]
             }
         }
-        
+        this.player2.moveList = {
+            standingLight: {
+                moveStage: [
+                    {
+                        stageLength: 2,
+                        xOffset: 120,
+                        yOffset: 110,
+                        height: 30,
+                        width: 90,
+                    },
+                    {
+                        stageLength: 5,
+                        xOffset: 170,
+                        yOffset: 60,
+                        height: 30,
+                        width: 90,
+                    },
+                    {
+                        stageLength: 5,
+                        xOffset: 170,
+                        yOffset: 20,
+                        height: 70,
+                        width: 90,
+                    }
+                ]
+            } ,
+            standingLightHeavy: {
+                moveStage: [
+                    {
+                        stageLength: 3,
+                        xOffset: 140,
+                        yOffset: 110,
+                        height: 30,
+                        width: 90,
+                    },
+                    {
+                        stageLength: 7,
+                        xOffset: 190,
+                        yOffset: 60,
+                        height: 30,
+                        width: 90,
+                    },
+                    {
+                        stageLength: 7,
+                        xOffset: 190,
+                        yOffset: 20,
+                        height: 70,
+                        width: 90,
+                    }
+                ]
+            }
+        }
         // this.player.body.setGravityY(300)
 
         this.physics.world.bounds.width = map.widthInPixels;
