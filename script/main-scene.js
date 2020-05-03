@@ -244,7 +244,7 @@ class MainScene extends Phaser.Scene {
                         width: 90,
                     }
                 ]
-            } 
+            } ,
             standingLightHeavy: {
                 moveStage: [
                     {
@@ -271,7 +271,7 @@ class MainScene extends Phaser.Scene {
                 ]
             }
         }
-        }
+        
         // this.player.body.setGravityY(300)
 
         this.physics.world.bounds.width = map.widthInPixels;
@@ -359,7 +359,7 @@ class MainScene extends Phaser.Scene {
             if(this.player.canMove) {
                 if(this.wasd.light.isDown) {
                     this.player.canMove = false;
-                    this.player.performingMove = 'standingLight'
+                    this.player.performingMove = 'standingLightHeavy'
                 } else {
                     if(this.player.body.y > 855) {
                         this.player.body.setVelocityX(0);
