@@ -72,7 +72,7 @@ class MainScene extends Phaser.Scene {
         // What to create?
         const map = this.make.tilemap({key: 'map'});
 
-        const tiles = map.addTilesetImage('room', 'mainRoom');
+        const tiles = map.addTilesetImage('stage', 'mainRoom');
         const vat = map.addTilesetImage('vat small', 'vat');
         const floor = map.createStaticLayer('Floor Layer', tiles, 0,0);
         const walls = map.createStaticLayer('Wall Layer', tiles, 0,0);
@@ -123,7 +123,7 @@ class MainScene extends Phaser.Scene {
 
         this.target = null;
 
-        this.player = this.physics.add.sprite(100,980, 'Atlas');
+        this.player = this.physics.add.sprite(732,624, 'Atlas');
         this.player.setDepth(100);
         this.player.body.setSize(192,232);
         this.player.body.offset.y=0;
@@ -158,7 +158,7 @@ class MainScene extends Phaser.Scene {
                         width: 90,
                     }
                 ]
-            } 
+            }, 
             standingLightHeavy: {
                 moveStage: [
                     {
@@ -184,7 +184,6 @@ class MainScene extends Phaser.Scene {
                     }
                 ]
             }
-        }
         }
         // this.player.body.setGravityY(300)
 
@@ -273,9 +272,9 @@ class MainScene extends Phaser.Scene {
             if(this.player.canMove) {
                 if(this.wasd.light.isDown) {
                     this.player.canMove = false;
-                    this.player.performingMove = 'standingHeavy'
+                    this.player.performingMove = 'standingLightHeavy'
                 } else {
-                    if(this.player.body.y > 855) {
+                    if(this.player.body.y > 503.9) {
                         this.player.body.setVelocityX(0);
                         if (this.cursors.left.isDown || this.wasd.left.isDown || (gamepad && gamepad.left))
                         {
@@ -292,7 +291,7 @@ class MainScene extends Phaser.Scene {
                     // Vertical movement
                     if (this.cursors.up.isDown || this.wasd.up.isDown || (gamepad && gamepad.up))
                     {
-                        if(this.player.body.y > 855)
+                        if(this.player.body.y > 503.9)
                         {
                             this.player.body.setVelocityY(-playerVelocityY*1.5);
                             // verticalMove--;
