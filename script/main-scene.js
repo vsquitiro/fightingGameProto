@@ -123,16 +123,26 @@ class MainScene extends Phaser.Scene {
 
         this.target = null;
 
-        this.player = this.physics.add.sprite(732,624, 'Atlas');
+        this.player = this.physics.add.sprite(732,623, 'Atlas');
+        this.player2 = this.physics.add.sprite(932,623, 'Buck')
         this.player.setDepth(100);
+        this.player2.setDepth(100);
         this.player.body.setSize(192,232);
+        this.player2.body.setSize(192,232);
         this.player.body.offset.y=0;
+        this.player2.body.offset.y=0;
         this.player.body.offset.x=20;
+        this.player2.body.offset.x=20;
         this.player.body.debugShowBody;
+        this.player2.body.debugShowBody;
         this.player.canMove = true;
+        this.player2.canMove = true;
         this.player.performingMove = "none";
+        this.player2.performingMove = "none";
         this.player.moveStage = -1;
+        this.player2.moveStage = -1;
         this.player.moveProgress = 0;
+        this.player2.moveProgress = 0;
         this.player.moveList = {
             standingLight: {
                 moveStage: [
@@ -242,14 +252,16 @@ class MainScene extends Phaser.Scene {
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
         this.player.setCollideWorldBounds(true);
+        this.player2.setCollideWorldBounds(true);
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player);
         this.cameras.main.roundPixels=true;
 
         this.physics.add.collider(this.player, walls);
-        this.physics.add.collider(this.player, this.interactables);
-        this.physics.add.overlap(this.player, this.targetZones);
+        this.physics.add.collider(this.player2, walls);
+        // this.physics.add.collider(this.player, this.interactables);
+        // this.physics.add.overlap(this.player, this.targetZones);
 
         this.createInput();
     }
