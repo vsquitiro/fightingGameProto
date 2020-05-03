@@ -158,7 +158,7 @@ class MainScene extends Phaser.Scene {
                         width: 90,
                     }
                 ]
-            }, 
+            } ,
             standingLightHeavy: {
                 moveStage: [
                     {
@@ -185,6 +185,7 @@ class MainScene extends Phaser.Scene {
                 ]
             }
         }
+        
         // this.player.body.setGravityY(300)
 
         this.physics.world.bounds.width = map.widthInPixels;
