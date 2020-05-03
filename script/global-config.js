@@ -9,6 +9,8 @@ const tantrumMessageChance = 0.2;
 const fuelTimeout = 10*1000;
 const crackTimeout = 20*1000;
 
+
+
 const vatLevels = [
     {
         //change for final game

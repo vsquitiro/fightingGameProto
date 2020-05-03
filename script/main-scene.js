@@ -14,60 +14,60 @@ class MainScene extends Phaser.Scene {
         // this.chaos = new Chaos();
     }
     create() {
-        this.nextRest = 'restDown';
-        this.spriteIdx = [0,3,12,15,24];
+        // this.nextRest = 'restDown';
+        // this.spriteIdx = [0,3,12,15,24];
 
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('player', {start:8, end:11}),
-            frameRate: 8,
-            repeat: -1
-        });
+        // this.anims.create({
+        //     key: 'left',
+        //     frames: this.anims.generateFrameNumbers('player', {start:8, end:11}),
+        //     frameRate: 8,
+        //     repeat: -1
+        // });
 
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('player', {start:12, end:15}),
-            frameRate: 8,
-            repeat: -1
-        });
+        // this.anims.create({
+        //     key: 'right',
+        //     frames: this.anims.generateFrameNumbers('player', {start:12, end:15}),
+        //     frameRate: 8,
+        //     repeat: -1
+        // });
 
-        this.anims.create({
-            key: 'up',
-            frames: this.anims.generateFrameNumbers('player', {start:4, end:7}),
-            frameRate: 8,
-            repeat: -1
-        });
+        // this.anims.create({
+        //     key: 'up',
+        //     frames: this.anims.generateFrameNumbers('player', {start:4, end:7}),
+        //     frameRate: 8,
+        //     repeat: -1
+        // });
 
-        this.anims.create({
-            key: 'down',
-            frames: this.anims.generateFrameNumbers('player', {start:0, end:3}),
-            frameRate: 8,
-            repeat: -1
-        });        
+        // this.anims.create({
+        //     key: 'down',
+        //     frames: this.anims.generateFrameNumbers('player', {start:0, end:3}),
+        //     frameRate: 8,
+        //     repeat: -1
+        // });        
 
-        this.anims.create({
-            key: 'restLeft',
-            frames: [{key: 'player', frame:8}],
-            frameRate: 20,
-        });
+        // this.anims.create({
+        //     key: 'restLeft',
+        //     frames: [{key: 'player', frame:8}],
+        //     frameRate: 20,
+        // });
 
-        this.anims.create({
-            key: 'restRight',
-            frames: [{key: 'player', frame:13}],
-            frameRate: 20,
-        });
+        // this.anims.create({
+        //     key: 'restRight',
+        //     frames: [{key: 'player', frame:13}],
+        //     frameRate: 20,
+        // });
 
-        this.anims.create({
-            key: 'restUp',
-            frames: [{key: 'player', frame:4}],
-            frameRate: 20,
-        });
+        // this.anims.create({
+        //     key: 'restUp',
+        //     frames: [{key: 'player', frame:4}],
+        //     frameRate: 20,
+        // });
 
-        this.anims.create({
-            key: 'restDown',
-            frames: [{key: 'player', frame:0}],
-            frameRate: 20,
-        });
+        // this.anims.create({
+        //     key: 'restDown',
+        //     frames: [{key: 'player', frame:0}],
+        //     frameRate: 20,
+        // });
 
         // What to create?
         const map = this.make.tilemap({key: 'map'});
@@ -87,13 +87,6 @@ class MainScene extends Phaser.Scene {
         this.sys.animatedTiles.setRate(0.5);
 
         this.crackAudio = this.sound.add('crack', {loop: false});
-
-        // this.anims.create({
-        //     key:'blop',
-        //     frames:this.anims.generateFrameNumbers('player', {start:2, end:3}),
-        //     frameRate: 16,
-        //     repeat: -1
-        // });
 
         this.interactables = [];
 
@@ -127,85 +120,6 @@ class MainScene extends Phaser.Scene {
             zone.body.moves = false;
             return zone;
         };
-        // const createSprite = (sheet, frame, animation) => (obj) => {
-        //     const x = obj.x + (obj.width / 2);
-        //     const y = obj.y - (obj.height / 2);
-        //     const sprite = this.physics.add.sprite(x, y, sheet, frame);
-        //     sprite.customProperties = {
-        //         ...obj.customProperties
-        //     };
-        //     sprite.get = (name) => sprite.customProperties[name];
-        //     sprite.set = (name, value) => sprite.customProperties[name] = value;
-
-        //     sprite.setImmovable(true);
-        //     return sprite;
-        // };
-
-        const plotLayer = map.getObjectLayer('Plots');
-        const plotObjects = plotLayer.objects.map(transformObject);
-        // this.plots = plotObjects
-        //     .filter((obj) => obj.get('objectType') == 'plot')
-        //     .map(createSprite('basin', 0))
-        //     .map((plot, index) => {
-        //         plot.set('plotIndex', index);
-        //         SystemState.addPlot(plot.get('id'));
-        //         plot.getPlotDef = () => SystemState.farm[index];
-        //         return plot;
-        //     });
-        // this.plotInteractions = plotObjects
-        //     .filter((obj) => obj.get('objectType') == 'interactor')
-        //     .map(createZone);
-
-        // const springLayer = map.getObjectLayer('Springs');
-        // const springObjects = springLayer.objects.map(transformObject);
-        // this.springs = springObjects
-        //     .filter((obj) => obj.get('objectType') == 'spring')
-        //     .map(createSprite('springs', 0, 'lvl00'))
-        //     .map((spring, index) => {
-        //         spring.set('springIndex', index);
-        //         SystemState.addSpring(spring.get('id'));
-        //         spring.getSpringDef = () => SystemState.fountain[index];
-        //         return spring;
-        //     });
-        // this.springInteractions = springObjects
-        //     .filter((obj) => obj.get('objectType') == 'interactor')
-        //     .map(createZone);
-
-        // const godControlLayer = map.getObjectLayer('GodControls');
-        // const godControlObjects = godControlLayer.objects.map(transformObject);
-        // this.foodTerminal = godControlObjects
-        //     .filter((obj) => obj.get('objectType') == 'foodTerminal')
-        //     .map(createSprite('objects', 0));
-        // this.fuelTerminal = godControlObjects
-        //     .filter((obj) => obj.get('objectType') == 'fuelTerminal')
-        //     .map(createSprite('objects', 1));
-        // this.godControlInteractions = godControlObjects
-        //     .filter((obj) => obj.get('objectType') == 'interactor')
-        //     .map(createZone);
-
-
-        // const fertLayer = map.getObjectLayer('Fert');
-        // const fertObjects = fertLayer.objects.map(transformObject);
-        // this.ferts = fertObjects
-        //     .filter((obj) => obj.get('objectType') == 'fert')
-        //     .map(createSprite('objects', 2));  
-        // this.fertInteractions = fertObjects
-        //     .filter((obj) => obj.get('objectType') == 'interactor')
-        //     .map(createZone);
-
-        // this.interactables = [
-        //     ...this.plots,
-        //     ...this.springs,
-        //     ...this.fuelTerminal,
-        //     ...this.foodTerminal,
-        //     ...this.ferts,
-        // ];
-        // this.targetZones = [
-        //     ...this.plotInteractions,
-        //     ...this.springInteractions,
-        //     ...this.godControlInteractions,
-        //     ...this.fertInteractions,
-        // ];
 
         this.target = null;
 
@@ -359,7 +273,7 @@ class MainScene extends Phaser.Scene {
             if(this.player.canMove) {
                 if(this.wasd.light.isDown) {
                     this.player.canMove = false;
-                    this.player.performingMove = 'standingLight'
+                    this.player.performingMove = 'standingHeavy'
                 } else {
                     if(this.player.body.y > 855) {
                         this.player.body.setVelocityX(0);
